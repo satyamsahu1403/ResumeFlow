@@ -1,1 +1,5 @@
-// Flows will be imported for their side effects in this file.
+import { config } from 'dotenv';
+config();
+
+import '@/ai/flows/score-candidate-resumes.ts';
+import '@/ai/flows/extract-key-resume-strengths.ts';
