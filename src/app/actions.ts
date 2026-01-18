@@ -3,7 +3,7 @@
 import { scoreCandidateResume } from '@/ai/flows/score-candidate-resumes';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
-import { candidates } from './lib/mock-data';
+import { candidates } from '@/lib/mock-data';
 
 const uploadSchema = z.object({
   jobId: z.string(),
