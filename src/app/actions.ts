@@ -64,28 +64,25 @@ export async function updateCandidateStatus(input: z.infer<typeof updateCandidat
   await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate network delay
 
   const jobCandidates = candidates[jobId];
-  if (jobCandidates) {
+  const job = jobs.find(j => j.id === jobId);
+
+  if (jobCandidates && job) {
     const candidateIndex = jobCandidates.findIndex(c => c.id === candidateId);
     if (candidateIndex !== -1) {
       if (status === 'accepted') {
         const candidate = jobCandidates[candidateIndex];
-        const job = jobs.find(j => j.id === jobId);
-        if (job) {
-          acceptedCandidates.unshift({
-            ...candidate,
-            jobTitle: job.title,
-            status: 'accepted',
-            acceptedDate: new Date().toISOString(),
-          });
-        }
+        acceptedCandidates.unshift({
+          ...candidate,
+          jobId: jobId,
+          jobTitle: job.title,
+          status: 'accepted',
+          acceptedDate: new Date().toISOString(),
+        });
       }
 
       jobCandidates.splice(candidateIndex, 1);
       
-      const job = jobs.find(j => j.id === jobId);
-      if (job) {
-        job.candidatesCount = jobCandidates.length;
-      }
+      job.candidatesCount = jobCandidates.length;
     }
   }
 

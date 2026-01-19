@@ -64,6 +64,7 @@ export let acceptedCandidates: AcceptedCandidate[] = [
       score: 92,
       keyStrengths: ['Next.js Expert', 'State Management', 'UI/UX Sensitivity'],
       status: 'accepted',
+      jobId: 'sr-frontend-engineer',
       jobTitle: 'Senior Frontend Engineer',
       acceptedDate: new Date('2024-07-25T11:00:00Z').toISOString()
     },
@@ -74,6 +75,7 @@ export let acceptedCandidates: AcceptedCandidate[] = [
         score: 95,
         keyStrengths: ['User-Centered Design', 'Prototyping', 'Design Systems'],
         status: 'accepted',
+        jobId: 'product-designer',
         jobTitle: 'Product Designer',
         acceptedDate: new Date('2024-07-24T16:20:00Z').toISOString()
     }

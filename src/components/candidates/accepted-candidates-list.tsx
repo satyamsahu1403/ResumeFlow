@@ -26,7 +26,7 @@ export default function AcceptedCandidatesList({ candidates }: { candidates: Acc
             </Avatar>
             <div className="flex-1">
               <h3 className="font-semibold text-lg">{candidate.name}</h3>
-              <Link href={`/job/${candidate.id.split('-')[0]}`} className="text-sm text-muted-foreground flex items-center gap-2 hover:text-primary transition-colors">
+              <Link href={`/job/${candidate.jobId}`} className="text-sm text-muted-foreground flex items-center gap-2 hover:text-primary transition-colors">
                 <Briefcase className="h-4 w-4" /> 
                 <span>Accepted for {candidate.jobTitle}</span>
               </Link>

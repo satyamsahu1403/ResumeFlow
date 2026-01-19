@@ -18,6 +18,7 @@ export interface Candidate {
 }
 
 export interface AcceptedCandidate extends Candidate {
+  jobId: string;
   jobTitle: string;
   acceptedDate: string; // ISO Date String
 }
