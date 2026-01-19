@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { motion } from 'framer-motion';
 import type { Candidate } from '@/lib/types';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -51,12 +50,7 @@ export default function CandidateCard({ candidate, index, jobId, onStatusUpdate 
   };
 
   return (
-    <motion.div
-      layout
-      initial={{ opacity: 0, y: 50, scale: 0.3 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      exit={{ opacity: 0, y: -20, scale: 0.9, transition: { duration: 0.3 } }}
-      transition={{ type: 'spring', stiffness: 300, damping: 30, delay: index * 0.1 }}
+    <div
       className="rounded-lg border bg-card p-4 space-y-4"
     >
       <div className="flex items-center gap-4">
@@ -82,19 +76,19 @@ export default function CandidateCard({ candidate, index, jobId, onStatusUpdate 
       </div>
       
       <div className="flex gap-2 pt-2">
-        <motion.div whileTap={{ scale: 0.95 }} className="w-full">
+        <div className="w-full">
             <Button variant="destructive" size="sm" className="w-full" onClick={() => handleStatusUpdate('rejected')} disabled={!!isUpdating}>
               {isUpdating === 'reject' ? <LoaderCircle className="animate-spin" /> : <X />}
               {isUpdating === 'reject' ? 'Rejecting...' : 'Reject'}
             </Button>
-        </motion.div>
-        <motion.div whileTap={{ scale: 0.95 }} className="w-full">
+        </div>
+        <div className="w-full">
             <Button variant="default" size="sm" className="w-full bg-green-600 hover:bg-green-700" onClick={() => handleStatusUpdate('accepted')} disabled={!!isUpdating}>
               {isUpdating === 'accept' ? <LoaderCircle className="animate-spin" /> : <Check />}
               {isUpdating === 'accept' ? 'Accepting...' : 'Accept'}
             </Button>
-        </motion.div>
+        </div>
       </div>
-    </motion.div>
+    </div>
   );
 }

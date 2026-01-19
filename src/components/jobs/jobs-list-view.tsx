@@ -77,9 +77,9 @@ export default function JobsListView({ jobs }: { jobs: Job[] }) {
 
       {filteredJobs.length > 0 ? (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {filteredJobs.map((job, index) => (
+            {filteredJobs.map((job) => (
                 <Link key={job.id} href={`/job/${job.id}`} className="block">
-                    <JobCard job={job} index={index} />
+                    <JobCard job={job} />
                 </Link>
             ))}
         </div>

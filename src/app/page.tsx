@@ -33,9 +33,9 @@ export default function DashboardPage({ searchParams }: { searchParams?: { q?: s
       )}
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {jobs.map((job, index) => (
+        {jobs.map((job) => (
           <Link key={job.id} href={`/job/${job.id}`} className="block">
-            <JobCard job={job} index={index} />
+            <JobCard job={job} />
           </Link>
         ))}
         

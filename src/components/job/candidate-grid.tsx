@@ -3,7 +3,6 @@
 import type { Candidate } from '@/lib/types';
 import CandidateCard from './candidate-card';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { AnimatePresence } from 'framer-motion';
 
 interface CandidateGridProps {
   candidates: Candidate[];
@@ -21,7 +20,6 @@ export default function CandidateGrid({ candidates, jobId, onCandidateRemove }: 
       <CardContent className="space-y-4">
         {candidates.length > 0 ? (
           <div className="space-y-4">
-            <AnimatePresence>
                 {candidates.map((candidate, index) => (
                   <CandidateCard
                     key={candidate.id}
@@ -31,7 +29,6 @@ export default function CandidateGrid({ candidates, jobId, onCandidateRemove }: 
                     onStatusUpdate={onCandidateRemove}
                   />
                 ))}
-            </AnimatePresence>
           </div>
         ) : (
           <div className="text-center py-12 text-muted-foreground">

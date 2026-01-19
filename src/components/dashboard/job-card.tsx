@@ -1,22 +1,16 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import type { Job } from '@/lib/types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Briefcase, MapPin, Users } from 'lucide-react';
 
 interface JobCardProps {
   job: Job;
-  index: number;
 }
 
-export default function JobCard({ job, index }: JobCardProps) {
+export default function JobCard({ job }: JobCardProps) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-    >
+    <div>
       <Card className="h-full bg-card hover:border-primary/80 transition-all duration-300 transform hover:-translate-y-1 group">
         <CardHeader>
           <CardTitle className="text-xl group-hover:text-primary transition-colors">{job.title}</CardTitle>
@@ -36,6 +30,6 @@ export default function JobCard({ job, index }: JobCardProps) {
           </div>
         </CardContent>
       </Card>
-    </motion.div>
+    </div>
   );
 }
