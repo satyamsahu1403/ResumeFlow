@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
 
 interface RadialProgressProps {
   score: number;
@@ -15,7 +15,18 @@ export default function RadialProgress({
 }: RadialProgressProps) {
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
-  const offset = circumference - (score / 100) * circumference;
+  
+  // Start with the circle empty (full offset)
+  const [offset, setOffset] = useState(circumference);
+
+  useEffect(() => {
+    // On the client, after mounting, calculate the target offset and set it.
+    // The CSS transition will handle the animation.
+    const targetOffset = circumference - (score / 100) * circumference;
+    // A small timeout helps ensure the transition is applied smoothly after initial render
+    const timer = setTimeout(() => setOffset(targetOffset), 100);
+    return () => clearTimeout(timer);
+  }, [score, circumference]);
 
   const scoreColor =
     score >= 90
@@ -35,7 +46,7 @@ export default function RadialProgress({
           strokeWidth={strokeWidth}
           fill="transparent"
         />
-        <motion.circle
+        <circle
           cx={size / 2}
           cy={size / 2}
           r={radius}
@@ -44,9 +55,8 @@ export default function RadialProgress({
           fill="transparent"
           strokeLinecap="round"
           strokeDasharray={circumference}
-          initial={{ strokeDashoffset: circumference }}
-          animate={{ strokeDashoffset: offset }}
-          transition={{ duration: 1.5, ease: 'easeOut' }}
+          strokeDashoffset={offset}
+          style={{ transition: 'stroke-dashoffset 1.5s ease-out' }}
         />
       </svg>
       <span className="absolute text-sm font-semibold" style={{ color: scoreColor }}>
