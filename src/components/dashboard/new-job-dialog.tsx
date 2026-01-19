@@ -38,6 +38,11 @@ export default function NewJobDialog({ children }: { children: React.ReactNode }
   const { toast } = useToast();
   const [isOpen, setIsOpen] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   useEffect(() => {
     if (state.success) {
@@ -57,6 +62,10 @@ export default function NewJobDialog({ children }: { children: React.ReactNode }
     }
   }, [state, toast]);
   
+  if (!isMounted) {
+    return <>{children}</>;
+  }
+
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
