@@ -1,9 +1,9 @@
 'use server';
 
 import { scoreCandidateResume } from '@/ai/flows/score-candidate-resumes';
-import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 import { candidates, jobs } from '@/lib/mock-data';
+import { revalidatePath } from 'next/cache';
 
 const uploadSchema = z.object({
   jobId: z.string(),
@@ -37,7 +37,8 @@ export async function uploadAndScoreResume(input: z.infer<typeof uploadSchema>) 
     }
     candidates[validatedInput.jobId].unshift(newCandidate);
 
-    revalidatePath(`/job/${validatedInput.jobId}`);
+    // No longer revalidating path, client will update optimistically
+    // revalidatePath(`/job/${validatedInput.jobId}`);
 
     return { success: true, candidate: newCandidate };
   } catch (error) {
@@ -66,7 +67,8 @@ export async function updateCandidateStatus(input: z.infer<typeof updateCandidat
     }
   }
 
-  revalidatePath(`/job/${jobId}`);
+  // No longer revalidating path, client will update optimistically
+  // revalidatePath(`/job/${jobId}`);
   return { success: true };
 }
 

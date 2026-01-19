@@ -4,14 +4,15 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { UploadCloud, FileText, LoaderCircle, CheckCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { Job } from '@/lib/types';
+import { Job, Candidate } from '@/lib/types';
 import { uploadAndScoreResume } from '@/app/actions';
 
 interface DragAndDropUploadProps {
   job: Job;
+  onUploadSuccess: (candidate: Candidate) => void;
 }
 
-export default function DragAndDropUpload({ job }: DragAndDropUploadProps) {
+export default function DragAndDropUpload({ job, onUploadSuccess }: DragAndDropUploadProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [status, setStatus] = useState<'idle' | 'uploading' | 'success' | 'error'>('idle');
@@ -72,18 +73,23 @@ export default function DragAndDropUpload({ job }: DragAndDropUploadProps) {
     reader.onload = async () => {
       const resumeDataUri = reader.result as string;
       try {
-        await uploadAndScoreResume({
+        const result = await uploadAndScoreResume({
           jobId: job.id,
           jobDescription: job.description,
           resumeDataUri,
           fileName: fileToUpload.name,
         });
         
-        setStatus('success');
-        toast({
-          title: 'Upload Successful',
-          description: `${fileToUpload.name} has been uploaded and scored.`,
-        });
+        if (result.success && result.candidate) {
+          setStatus('success');
+          toast({
+            title: 'Upload Successful',
+            description: `${fileToUpload.name} has been uploaded and scored.`,
+          });
+          onUploadSuccess(result.candidate);
+        } else {
+          throw new Error('Resume scoring failed.');
+        }
         
         setTimeout(() => {
           setFile(null);

@@ -1,22 +1,17 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import type { Candidate } from '@/lib/types';
 import CandidateCard from './candidate-card';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { AnimatePresence } from 'framer-motion';
 
 interface CandidateGridProps {
-  initialCandidates: Candidate[];
+  candidates: Candidate[];
   jobId: string;
+  onCandidateRemove: (candidateId: string) => void;
 }
 
-export default function CandidateGrid({ initialCandidates, jobId }: CandidateGridProps) {
-  const [candidates, setCandidates] = useState<Candidate[]>(initialCandidates);
-
-  useEffect(() => {
-    setCandidates(initialCandidates);
-  }, [initialCandidates]);
+export default function CandidateGrid({ candidates, jobId, onCandidateRemove }: CandidateGridProps) {
 
   return (
     <Card className="bg-card/30 backdrop-blur-sm h-full">
@@ -28,7 +23,13 @@ export default function CandidateGrid({ initialCandidates, jobId }: CandidateGri
           <div className="space-y-4">
             <AnimatePresence>
                 {candidates.map((candidate, index) => (
-                  <CandidateCard key={candidate.id} candidate={candidate} index={index} jobId={jobId} />
+                  <CandidateCard
+                    key={candidate.id}
+                    candidate={candidate}
+                    index={index}
+                    jobId={jobId}
+                    onStatusUpdate={onCandidateRemove}
+                  />
                 ))}
             </AnimatePresence>
           </div>

@@ -15,9 +15,10 @@ interface CandidateCardProps {
   candidate: Candidate;
   index: number;
   jobId: string;
+  onStatusUpdate: (candidateId: string) => void;
 }
 
-export default function CandidateCard({ candidate, index, jobId }: CandidateCardProps) {
+export default function CandidateCard({ candidate, index, jobId, onStatusUpdate }: CandidateCardProps) {
   const [isUpdating, setIsUpdating] = useState<'accept' | 'reject' | false>(false);
   const { toast } = useToast();
 
@@ -35,7 +36,7 @@ export default function CandidateCard({ candidate, index, jobId }: CandidateCard
           title: `Candidate ${status}`,
           description: `${candidate.name} has been moved to the ${status} pile.`,
         });
-        // The component will be removed from the list via server-side revalidation
+        onStatusUpdate(candidate.id);
       } else {
         throw new Error('Update failed');
       }
