@@ -2,7 +2,7 @@
 
 import { scoreCandidateResume } from '@/ai/flows/score-candidate-resumes';
 import { z } from 'zod';
-import { candidates, jobs } from '@/lib/mock-data';
+import { jobs, candidates, acceptedCandidates } from '@/lib/mock-data';
 import { revalidatePath } from 'next/cache';
 
 const uploadSchema = z.object({
@@ -21,8 +21,6 @@ export async function uploadAndScoreResume(input: z.infer<typeof uploadSchema>) 
       resumeDataUri: validatedInput.resumeDataUri,
     });
     
-    // In a real application, you would save this to a database (e.g., Firestore).
-    // Here we are adding to our in-memory mock data.
     const newCandidate = {
       id: `candidate-${Date.now()}`,
       name: validatedInput.fileName.replace('.pdf', ''),
@@ -37,8 +35,14 @@ export async function uploadAndScoreResume(input: z.infer<typeof uploadSchema>) 
     }
     candidates[validatedInput.jobId].unshift(newCandidate);
 
-    // No longer revalidating path, client will update optimistically
-    // revalidatePath(`/job/${validatedInput.jobId}`);
+    const job = jobs.find(j => j.id === validatedInput.jobId);
+    if(job) {
+        job.candidatesCount = candidates[validatedInput.jobId].length;
+    }
+    
+    revalidatePath('/');
+    revalidatePath(`/job/${validatedInput.jobId}`);
+    revalidatePath('/jobs');
 
     return { success: true, candidate: newCandidate };
   } catch (error) {
@@ -55,7 +59,7 @@ const updateCandidateStatusSchema = z.object({
 
 export async function updateCandidateStatus(input: z.infer<typeof updateCandidateStatusSchema>) {
   const validatedInput = updateCandidateStatusSchema.parse(input);
-  const { jobId, candidateId } = validatedInput;
+  const { jobId, candidateId, status } = validatedInput;
 
   await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate network delay
 
@@ -63,12 +67,32 @@ export async function updateCandidateStatus(input: z.infer<typeof updateCandidat
   if (jobCandidates) {
     const candidateIndex = jobCandidates.findIndex(c => c.id === candidateId);
     if (candidateIndex !== -1) {
+      if (status === 'accepted') {
+        const candidate = jobCandidates[candidateIndex];
+        const job = jobs.find(j => j.id === jobId);
+        if (job) {
+          acceptedCandidates.unshift({
+            ...candidate,
+            jobTitle: job.title,
+            status: 'accepted',
+            acceptedDate: new Date().toISOString(),
+          });
+        }
+      }
+
       jobCandidates.splice(candidateIndex, 1);
+      
+      const job = jobs.find(j => j.id === jobId);
+      if (job) {
+        job.candidatesCount = jobCandidates.length;
+      }
     }
   }
 
-  // No longer revalidating path, client will update optimistically
-  // revalidatePath(`/job/${jobId}`);
+  revalidatePath('/');
+  revalidatePath(`/job/${jobId}`);
+  revalidatePath('/jobs');
+  revalidatePath('/candidates');
   return { success: true };
 }
 
@@ -102,9 +126,11 @@ export async function createJob(prevState: any, formData: FormData) {
     location,
     description,
     candidatesCount: 0,
+    createdAt: new Date().toISOString(),
   };
 
   jobs.unshift(newJob);
   revalidatePath('/');
+  revalidatePath('/jobs');
   return { success: true };
 }
