@@ -44,8 +44,9 @@ Job Description: {{{jobDescription}}}
 
 Resume: {{media url=resumeDataUri}}
 
-Score (0-100): 
-Key Strengths: `,
+Please provide the output in JSON format. The JSON object should conform to the following Zod schema:
+{{ zodToJson }}
+`,
 });
 
 const scoreCandidateResumeFlow = ai.defineFlow(
