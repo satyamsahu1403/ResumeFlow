@@ -14,7 +14,7 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
 export const metadata: Metadata = {
   title: 'ResumeFlow AI',
-  description': 'An AI-powered resume shortlisting application.',
+  description: 'An AI-powered resume shortlisting application.',
 };
 
 function AppHeaderFallback() {
