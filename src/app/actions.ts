@@ -3,7 +3,7 @@
 import { scoreCandidateResume } from '@/ai/flows/score-candidate-resumes';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
-import { candidates } from '@/lib/mock-data';
+import { candidates, jobs } from '@/lib/mock-data';
 
 const uploadSchema = z.object({
   jobId: z.string(),
@@ -44,4 +44,65 @@ export async function uploadAndScoreResume(input: z.infer<typeof uploadSchema>) 
     console.error('Error scoring resume:', error);
     throw new Error('Failed to score resume.');
   }
+}
+
+const updateCandidateStatusSchema = z.object({
+  jobId: z.string(),
+  candidateId: z.string(),
+  status: z.enum(['accepted', 'rejected']),
+});
+
+export async function updateCandidateStatus(input: z.infer<typeof updateCandidateStatusSchema>) {
+  const validatedInput = updateCandidateStatusSchema.parse(input);
+  const { jobId, candidateId } = validatedInput;
+
+  await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate network delay
+
+  const jobCandidates = candidates[jobId];
+  if (jobCandidates) {
+    const candidateIndex = jobCandidates.findIndex(c => c.id === candidateId);
+    if (candidateIndex !== -1) {
+      jobCandidates.splice(candidateIndex, 1);
+    }
+  }
+
+  revalidatePath(`/job/${jobId}`);
+  return { success: true };
+}
+
+export async function createJob(prevState: any, formData: FormData) {
+  const jobSchema = z.object({
+    title: z.string().min(3, { message: "Title must be at least 3 characters." }),
+    department: z.string().min(2, { message: "Department must be at least 2 characters." }),
+    location: z.string().min(2, { message: "Location must be at least 2 characters." }),
+    description: z.string().min(10, { message: "Description must be at least 10 characters." }),
+  });
+  
+  const validatedFields = jobSchema.safeParse({
+    title: formData.get('title'),
+    department: formData.get('department'),
+    location: formData.get('location'),
+    description: formData.get('description'),
+  });
+
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+    }
+  }
+
+  const { title, department, location, description } = validatedFields.data;
+
+  const newJob = {
+    id: title.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-') + '-' + Date.now(),
+    title,
+    department,
+    location,
+    description,
+    candidatesCount: 0,
+  };
+
+  jobs.unshift(newJob);
+  revalidatePath('/');
+  return { success: true };
 }

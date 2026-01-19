@@ -35,7 +35,7 @@ export default function JobDetailPage({ params }: { params: { id: string } }) {
             <DragAndDropUpload job={job} />
         </div>
         <div className="lg:col-span-1">
-          <CandidateGrid initialCandidates={candidates} />
+          <CandidateGrid initialCandidates={candidates} jobId={job.id} />
         </div>
       </div>
     </div>

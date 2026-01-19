@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { Candidate } from '@/lib/types';
 import CandidateCard from './candidate-card';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -8,13 +8,15 @@ import { AnimatePresence } from 'framer-motion';
 
 interface CandidateGridProps {
   initialCandidates: Candidate[];
+  jobId: string;
 }
 
-export default function CandidateGrid({ initialCandidates }: CandidateGridProps) {
+export default function CandidateGrid({ initialCandidates, jobId }: CandidateGridProps) {
   const [candidates, setCandidates] = useState<Candidate[]>(initialCandidates);
-  
-  // In a real app, this would be updated via websockets or by re-fetching.
-  // For now, it's just showing the initial data.
+
+  useEffect(() => {
+    setCandidates(initialCandidates);
+  }, [initialCandidates]);
 
   return (
     <Card className="bg-card/30 backdrop-blur-sm h-full">
@@ -26,7 +28,7 @@ export default function CandidateGrid({ initialCandidates }: CandidateGridProps)
           <div className="space-y-4">
             <AnimatePresence>
                 {candidates.map((candidate, index) => (
-                  <CandidateCard key={candidate.id} candidate={candidate} index={index} />
+                  <CandidateCard key={candidate.id} candidate={candidate} index={index} jobId={jobId} />
                 ))}
             </AnimatePresence>
           </div>

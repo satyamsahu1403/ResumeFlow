@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
+import { useToast } from '@/hooks/use-toast';
 
 const menuItems = [
   { href: '/', label: 'Dashboard', icon: LayoutDashboard },
@@ -31,6 +32,16 @@ const menuItems = [
 
 export default function AppSidebar() {
   const pathname = usePathname();
+  const { toast } = useToast();
+
+  const handleLogout = () => {
+    toast({
+      title: 'Logged Out',
+      description: 'You have been successfully logged out.',
+    });
+    // In a real app, you would call a sign-out function and redirect.
+  };
+
 
   return (
     <Sidebar className="border-r border-border/20">
@@ -66,7 +77,7 @@ export default function AppSidebar() {
                 <span className="font-semibold">User</span>
                 <span className="text-muted-foreground">user@example.com</span>
             </div>
-            <LogOut className="ml-auto h-5 w-5 text-muted-foreground cursor-pointer hover:text-foreground" />
+            <LogOut onClick={handleLogout} className="ml-auto h-5 w-5 text-muted-foreground cursor-pointer hover:text-foreground" />
         </div>
       </SidebarFooter>
     </Sidebar>
