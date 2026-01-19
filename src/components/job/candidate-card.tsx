@@ -57,7 +57,7 @@ export default function CandidateCard({ candidate, index, jobId, onStatusUpdate 
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: -20, scale: 0.9, transition: { duration: 0.3 } }}
       transition={{ type: 'spring', stiffness: 300, damping: 30, delay: index * 0.1 }}
-      className="rounded-lg border bg-card/50 backdrop-blur-md p-4 space-y-4"
+      className="rounded-lg border bg-card p-4 space-y-4"
     >
       <div className="flex items-center gap-4">
         <Avatar className="h-12 w-12">
