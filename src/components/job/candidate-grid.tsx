@@ -14,7 +14,7 @@ interface CandidateGridProps {
 export default function CandidateGrid({ candidates, jobId, onCandidateRemove }: CandidateGridProps) {
 
   return (
-    <Card className="bg-card/30 backdrop-blur-sm h-full">
+    <Card className="bg-card h-full">
       <CardHeader>
         <CardTitle>Candidates ({candidates.length})</CardTitle>
       </CardHeader>

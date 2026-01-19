@@ -17,7 +17,7 @@ export default function JobCard({ job, index }: JobCardProps) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
     >
-      <Card className="h-full bg-card/50 backdrop-blur-sm hover:border-primary/80 transition-all duration-300 transform hover:-translate-y-1 group">
+      <Card className="h-full bg-card hover:border-primary/80 transition-all duration-300 transform hover:-translate-y-1 group">
         <CardHeader>
           <CardTitle className="text-xl group-hover:text-primary transition-colors">{job.title}</CardTitle>
         </CardHeader>

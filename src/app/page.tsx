@@ -39,7 +39,7 @@ export default function DashboardPage({ searchParams }: { searchParams?: { q?: s
           </Link>
         ))}
         
-        <div className="md:col-span-2 lg:col-span-1 p-6 rounded-lg border bg-card/50 backdrop-blur-sm flex flex-col items-center justify-center text-center hover:border-primary transition-colors duration-300">
+        <div className="md:col-span-2 lg:col-span-1 p-6 rounded-lg border bg-card flex flex-col items-center justify-center text-center hover:border-primary transition-colors duration-300">
             <h3 className="text-lg font-semibold text-primary">Create a New Opening</h3>
             <p className="text-sm text-muted-foreground mt-2 mb-4">Post a new job and start finding the best talent with AI.</p>
             <NewJobDialog>

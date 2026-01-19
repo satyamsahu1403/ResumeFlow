@@ -18,7 +18,7 @@ export default function AcceptedCandidatesList({ candidates }: { candidates: Acc
   return (
     <div className="space-y-4">
       {candidates.map(candidate => (
-        <Card key={candidate.id} className="bg-card/50 backdrop-blur-sm hover:border-primary/80 transition-all duration-300 transform hover:-translate-y-1 group">
+        <Card key={candidate.id} className="bg-card hover:border-primary/80 transition-all duration-300 transform hover:-translate-y-1 group">
           <CardContent className="p-4 flex items-center gap-4">
             <Avatar className="h-12 w-12">
               <AvatarImage src={candidate.avatarUrl} alt={candidate.name} data-ai-hint="person portrait" />

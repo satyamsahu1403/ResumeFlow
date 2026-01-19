@@ -127,7 +127,7 @@ export default function DragAndDropUpload({ job, onUploadSuccess }: DragAndDropU
       <motion.div
         animate={{ scale: isDragging ? 1.05 : 1 }}
         transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-        className="w-full p-8 border-2 border-dashed rounded-lg text-center cursor-pointer transition-colors bg-card/50 backdrop-blur-sm"
+        className="w-full p-8 border-2 border-dashed rounded-lg text-center cursor-pointer transition-colors bg-card"
       >
         <input
           type="file"
