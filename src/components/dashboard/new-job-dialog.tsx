@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
-import { useFormState, useFormStatus } from 'react-dom';
+import { useState, useEffect, useRef, useActionState } from 'react';
+import { useFormStatus } from 'react-dom';
 import {
   Dialog,
   DialogContent,
@@ -34,7 +34,7 @@ function SubmitButton() {
 }
 
 export default function NewJobDialog({ children }: { children: React.ReactNode }) {
-  const [state, formAction] = useFormState(createJob, initialState);
+  const [state, formAction] = useActionState(createJob, initialState);
   const { toast } = useToast();
   const [isOpen, setIsOpen] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
