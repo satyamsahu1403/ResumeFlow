@@ -41,15 +41,18 @@ const prompt = ai.definePrompt({
   name: 'extractKeyResumeStrengthsPrompt',
   input: {schema: ExtractKeyResumeStrengthsInputSchema},
   output: {schema: ExtractKeyResumeStrengthsOutputSchema},
-  prompt: `You are an expert resume analyst. Your task is to extract the key strengths from a resume, tailoring them towards a specific job description.
+  prompt: `You are an expert resume analyst. Your task is to extract the key strengths from a resume, tailored to a specific job description.
 
-Resume Text: {{{resumeText}}}
+Resume Text:
+{{{resumeText}}}
 
-Job Description: {{{jobDescription}}}
+Job Description:
+{{{jobDescription}}}
 
-Based on the resume and job description, identify the 3-5 most relevant key strengths of the candidate. Present the strengths as a list of concise phrases.
+Based on the resume and job description, identify the 3-5 most relevant key strengths of the candidate.
 
-{{ zodToJson keyStrengths}}`,
+Your output MUST be a valid JSON object that conforms to this JSON Schema:
+{{zodToJson}}`,
 });
 
 const extractKeyResumeStrengthsFlow = ai.defineFlow(

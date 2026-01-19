@@ -17,7 +17,7 @@ const ScoreCandidateResumeInputSchema = z.object({
   resumeDataUri: z
     .string()
     .describe(
-      'The resume as a data URI that must include a MIME type and use Base64 encoding. Expected format: \'data:<mimetype>;base64,<encoded_data>\'.' // Corrected the example format
+      "The resume as a data URI that must include a MIME type and use Base64 encoding. Expected format: 'data:<mimetype>;base64,<encoded_data>'."
     ),
 });
 export type ScoreCandidateResumeInput = z.infer<typeof ScoreCandidateResumeInputSchema>;
@@ -38,15 +38,18 @@ const scoreCandidateResumePrompt = ai.definePrompt({
   name: 'scoreCandidateResumePrompt',
   input: {schema: ScoreCandidateResumeInputSchema},
   output: {schema: ScoreCandidateResumeOutputSchema},
-  prompt: `You are an AI resume screener. Given a job description and a resume, you will score the resume based on how well it matches the job description (0-100). You will also extract key strengths from the resume.
+  prompt: `You are an AI resume screener. Your task is to score a candidate's resume against a job description and extract their key strengths.
 
-Job Description: {{{jobDescription}}}
+Job Description:
+{{{jobDescription}}}
 
-Resume: {{media url=resumeDataUri}}
+Resume:
+{{media url=resumeDataUri}}
 
-Please provide the output in JSON format. The JSON object should conform to the following Zod schema:
-{{ zodToJson }}
-`,
+Analyze the resume and provide a score from 0-100 indicating how well it matches the job description. Also, list the candidate's key strengths.
+
+Your output MUST be a valid JSON object that conforms to this JSON Schema:
+{{zodToJson}}`,
 });
 
 const scoreCandidateResumeFlow = ai.defineFlow(
